@@ -16,10 +16,6 @@ An internet browser
 
 Installation
 Before running the application, ensure that you have the required libraries installed. You can install the necessary libraries using the following command:
-
-Installation
-Before running the application, ensure that you have the required libraries installed. You can install the necessary libraries using the following command:
-
 pip install -r requirements.txt
 Make sure you are in the root directory of the project when running the command. The requirements.txt file should be present in the same directory.
 
