@@ -14,8 +14,8 @@ import pandas as pd
 import pandas as pd
 
 # Replace the links below with your actual Google Drive sharing links
-athlete_events_link = 'https://drive.google.com/file/d/1WNP6IOAURD6wEbC610TRXICZvvDsftRI/view?usp=share_link'
-noc_regions_link = 'https://drive.google.com/file/d/19g84sZxsCEVpUjtMsMQGlSuzXgm0qusB/view?usp=share_link'
+athlete_events_link = 'https://drive.google.com/file/d/1ellRoED7OXVMYyD075EXtNDjXGkOvq_h/view?usp=sharing'
+noc_regions_link = 'https://drive.google.com/file/d/1tZN-a0PTqvlC5y1BYra4SY8LM8sG2IZ7/view?usp=sharing'
 # --------------------------------------------------------
 
 # Convert sharing link to direct download link
