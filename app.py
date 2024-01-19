@@ -1,17 +1,13 @@
 import streamlit as st
 import pandas as pd
-import preprocessor,helper
+import preprocessor, helper
 import plotly.express as px
 import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.figure_factory as ff
-
-
 import gdown
-import pandas as pd
 
-import gdown
-import pandas as pd
+
 
 def download_file_from_google_drive(url, output_filename):
     """
@@ -44,14 +40,17 @@ noc_regions_output = download_file_from_google_drive(noc_regions_link, 'noc_regi
 
 
 
+
 if athlete_events_output and noc_regions_output:
     df = pd.read_csv(athlete_events_output)
     region_df = pd.read_csv(noc_regions_output)
-    # Further processing...
     df = preprocessor.preprocess(df, region_df)
 else:
-    print("Failed to download one or more files.")
     st.error("Failed to download data files. Please check the links or try again later.")
+
+# Streamlit app layout and functionality
+st.markdown(f'<style>{css}</style>', unsafe_allow_html=True)
+
 
 # Read the downloaded CSV files
 df = pd.read_csv(athlete_events_output)
