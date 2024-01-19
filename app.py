@@ -18,29 +18,39 @@ def download_file_from_google_drive(url, output_filename):
         st.error(f"Error downloading the file: {e}")
         return None
 
-# Download files
-athlete_events_link = 'https://drive.google.com/file/d/1ellRoED7OXVMYyD075EXtNDjXGkOvq_h/view?usp=sharing'
-noc_regions_link = 'https://drive.google.com/file/d/1tZN-a0PTqvlC5y1BYra4SY8LM8sG2IZ7/view?usp=sharing'
+# Google Drive sharing links
+athlete_events_link = 'https://drive.google.com/file/d/1Jaqcvb9N7qDxJuqjKhc3vVlG9ZUO5Tea/view?usp=sharing'
+noc_regions_link = 'https://drive.google.com/file/d/1bVlcaNnzg_HGCzATE2H-lK_FmNQhySau/view?usp=sharing'
 
+# Download the files
 athlete_events_output = download_file_from_google_drive(athlete_events_link, 'athlete_events.csv')
 noc_regions_output = download_file_from_google_drive(noc_regions_link, 'noc_regions.csv')
 
-# Verify and process the downloaded files
-if athlete_events_output and noc_regions_output:
-    df = pd.read_csv(athlete_events_output)
-    region_df = pd.read_csv(noc_regions_output)
-    df = preprocessor.preprocess(df, region_df)
-else:
+if not athlete_events_output or not noc_regions_output:
+    st.error("Failed to download data files. Please check the links or try again later.")
     st.stop()
 
-# CSS for styling
+# Read the downloaded CSV files
+df = pd.read_csv(athlete_events_output)
+region_df = pd.read_csv(noc_regions_output)
+
+# Data preprocessing
+df = preprocessor.preprocess(df, region_df)
+
+# Set custom CSS for background image and white background
 css = """
 body {
+    content: "";
     background: url('https://cdn.pixabay.com/photo/2013/12/12/08/12/olympics-227181_960_720.jpg');
-    background-size: cover;
+    position: absolute;
+    top:0px;
+    left:0px;
+    height: 100%;
+    width:100%;
+    z-index: -1;
     opacity: 0.90;
+    color: white;
 }
-
 .watermark {
     position: fixed;
     bottom: 10px;
@@ -51,9 +61,10 @@ body {
 }
 """
 st.markdown(f'<style>{css}</style>', unsafe_allow_html=True)
+st.markdown('<div class="overlay"></div>', unsafe_allow_html=True)
 st.markdown('<div class="watermark">Made By - B20AI029 B20AI030</div>', unsafe_allow_html=True)
 
-# Streamlit app layout
+# Create upper bar
 col1, col2 = st.columns([1, 4])
 with col1:
     st.image('https://cdn.pixabay.com/photo/2013/07/13/12/33/games-159849_960_720.png')
@@ -63,8 +74,9 @@ with col2:
 menu_options = ['Medal Tally', 'Overall Analysis', 'Country-wise Analysis', 'Athlete wise Analysis', 'Top-10', 'Additional Plots']
 user_menu = st.selectbox("Select an Option", menu_options)
 
-# Add a horizontal taskbar
-user_menu = st.selectbox("Select an Option", menu_options)
+# Implement the rest of your Streamlit app logic here
+# ...
+
 
 # ---------------------------------------------------------------------------------------------------
 
