@@ -1,70 +1,44 @@
 import streamlit as st
 import pandas as pd
-import preprocessor,helper
+import preprocessor, helper
 import plotly.express as px
 import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.figure_factory as ff
-
-
 import gdown
-import pandas as pd
 
-# import gdown
-import pandas as pd
+# Function to download files from Google Drive
+def download_file_from_google_drive(url, output_filename):
+    try:
+        file_id = url.split('/')[-2]
+        download_url = f'https://drive.google.com/uc?id={file_id}'
+        gdown.download(download_url, output_filename, quiet=False)
+        return output_filename
+    except Exception as e:
+        st.error(f"Error downloading the file: {e}")
+        return None
 
-# Replace the links below with your actual Google Drive sharing links
-athlete_events_link = 'https://drive.google.com/file/d/1Jaqcvb9N7qDxJuqjKhc3vVlG9ZUO5Tea/view?usp=sharing'
-noc_regions_link = 'https://drive.google.com/file/d/1bVlcaNnzg_HGCzATE2H-lK_FmNQhySau/view?usp=sharing'
-# --------------------------------------------------------
+# Download files
+athlete_events_link = 'https://drive.google.com/file/d/1ellRoED7OXVMYyD075EXtNDjXGkOvq_h/view?usp=sharing'
+noc_regions_link = 'https://drive.google.com/file/d/1tZN-a0PTqvlC5y1BYra4SY8LM8sG2IZ7/view?usp=sharing'
 
-# Convert sharing link to direct download link
-athlete_events_url = 'https://drive.google.com/uc?id=' + athlete_events_link.split('/')[-2]
-noc_regions_url = 'https://drive.google.com/uc?id=' + noc_regions_link.split('/')[-2]
+athlete_events_output = download_file_from_google_drive(athlete_events_link, 'athlete_events.csv')
+noc_regions_output = download_file_from_google_drive(noc_regions_link, 'noc_regions.csv')
 
-# Download the files
-athlete_events_output = 'athlete_events.csv'
-noc_regions_output = 'noc_regions.csv'
-gdown.download(athlete_events_url, athlete_events_output, quiet=False)
-gdown.download(noc_regions_url, noc_regions_output, quiet=False)
+# Verify and process the downloaded files
+if athlete_events_output and noc_regions_output:
+    df = pd.read_csv(athlete_events_output)
+    region_df = pd.read_csv(noc_regions_output)
+    df = preprocessor.preprocess(df, region_df)
+else:
+    st.stop()
 
-# Read the downloaded CSV files
-df = pd.read_csv(athlete_events_output)
-region_df = pd.read_csv(noc_regions_output)
-
-# print(df.head())
-# print(region_df.head())
-# ------------------------------------------------------------
-# df = pd.read_csv('athlete_events.csv')
-# region_df = pd.read_csv('noc_regions.csv')
-
-df = preprocessor.preprocess(df,region_df)
-import streamlit as st
-import base64
-
-import streamlit as st
-
-import streamlit as st
-import  base64
-
-# Set custom CSS for background image and white background
-
-# ------------------------------------------------------------------------------------------------------------
-# Set custom CSS for background image
-import streamlit as st
-
+# CSS for styling
 css = """
 body {
-    content: "";
     background: url('https://cdn.pixabay.com/photo/2013/12/12/08/12/olympics-227181_960_720.jpg');
-    position: absolute;
-    top:0px;
-    left:0px;
-    height: 100%;
-    width:100%;
-    z-index: -1;
+    background-size: cover;
     opacity: 0.90;
-    color: white;
 }
 
 .watermark {
@@ -76,12 +50,10 @@ body {
     z-index: 999;
 }
 """
-
 st.markdown(f'<style>{css}</style>', unsafe_allow_html=True)
-st.markdown('<div class="overlay"></div>', unsafe_allow_html=True)
-st.markdown('<div class="watermark" style: color: blue >Made By - B20AI029 B20AI030</div>', unsafe_allow_html=True)
+st.markdown('<div class="watermark">Made By - B20AI029 B20AI030</div>', unsafe_allow_html=True)
 
-# Create upper bar
+# Streamlit app layout
 col1, col2 = st.columns([1, 4])
 with col1:
     st.image('https://cdn.pixabay.com/photo/2013/07/13/12/33/games-159849_960_720.png')
@@ -89,6 +61,7 @@ with col2:
     st.title("Past Olympics Analysis App")
 
 menu_options = ['Medal Tally', 'Overall Analysis', 'Country-wise Analysis', 'Athlete wise Analysis', 'Top-10', 'Additional Plots']
+user_menu = st.selectbox("Select an Option", menu_options)
 
 # Add a horizontal taskbar
 user_menu = st.selectbox("Select an Option", menu_options)
