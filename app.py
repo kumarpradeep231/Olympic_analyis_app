@@ -19,8 +19,8 @@ def download_file_from_google_drive(url, output_filename):
         return None
 
 # Google Drive sharing links
-athlete_events_link = 'https://drive.google.com/file/d/1Jaqcvb9N7qDxJuqjKhc3vVlG9ZUO5Tea/view?usp=sharing'
-noc_regions_link = 'https://drive.google.com/file/d/1bVlcaNnzg_HGCzATE2H-lK_FmNQhySau/view?usp=sharing'
+athlete_events_link = 'https://drive.google.com/file/d/100C1TDDVxsnV3hvZRjTlBHVyg8VGtJeA/view?usp=sharing'
+noc_regions_link = 'https://drive.google.com/file/d/1qas-qe-QSGrru_hRhSe0NYzSgMBiFDfw/view?usp=sharing'
 
 # Download the files
 athlete_events_output = download_file_from_google_drive(athlete_events_link, 'athlete_events.csv')
