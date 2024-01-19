@@ -10,23 +10,48 @@ import plotly.figure_factory as ff
 import gdown
 import pandas as pd
 
-# import gdown
+import gdown
 import pandas as pd
 
-# Replace the links below with your actual Google Drive sharing links
+def download_file_from_google_drive(url, output_filename):
+    """
+    Downloads a file from Google Drive.
+
+    :param url: str - The Google Drive file URL.
+    :param output_filename: str - The name of the file to save the download as.
+    :return: str or None - The filename if download is successful, None otherwise.
+    """
+    try:
+        # Extracting file ID from the URL
+        file_id = url.split('/')[-2]
+        download_url = f'https://drive.google.com/uc?id={file_id}'
+
+        # Downloading the file
+        gdown.download(download_url, output_filename, quiet=False)
+        print(f"Downloaded file saved as {output_filename}")
+        return output_filename
+    except Exception as e:
+        print(f"Error downloading the file: {e}")
+        return None
+
+# Google Drive sharing links
 athlete_events_link = 'https://drive.google.com/file/d/1ellRoED7OXVMYyD075EXtNDjXGkOvq_h/view?usp=sharing'
 noc_regions_link = 'https://drive.google.com/file/d/1tZN-a0PTqvlC5y1BYra4SY8LM8sG2IZ7/view?usp=sharing'
-# --------------------------------------------------------
-
-# Convert sharing link to direct download link
-athlete_events_url = 'https://drive.google.com/uc?id=' + athlete_events_link.split('/')[-2]
-noc_regions_url = 'https://drive.google.com/uc?id=' + noc_regions_link.split('/')[-2]
 
 # Download the files
-athlete_events_output = 'athlete_events.csv'
-noc_regions_output = 'noc_regions.csv'
-gdown.download(athlete_events_url, athlete_events_output, quiet=False)
-gdown.download(noc_regions_url, noc_regions_output, quiet=False)
+athlete_events_output = download_file_from_google_drive(athlete_events_link, 'athlete_events.csv')
+noc_regions_output = download_file_from_google_drive(noc_regions_link, 'noc_regions.csv')
+
+
+
+if athlete_events_output and noc_regions_output:
+    df = pd.read_csv(athlete_events_output)
+    region_df = pd.read_csv(noc_regions_output)
+    # Further processing...
+    df = preprocessor.preprocess(df, region_df)
+else:
+    print("Failed to download one or more files.")
+    st.error("Failed to download data files. Please check the links or try again later.")
 
 # Read the downloaded CSV files
 df = pd.read_csv(athlete_events_output)
